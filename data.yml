@@ -1,4 +1,4 @@
-tset_command: |
+test_command: |
     prism --version
 
     
