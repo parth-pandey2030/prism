@@ -1,76 +1,65 @@
-# Constants
-DIGITS = '0123456789'
+import keywords
+import re
 
 # Tokens
-TT_INT = 'INT'
-TT_FLOAT = 'FLOAT'
-TT_PLUS = 'PLUS'
-TT_MINUS = 'MINUS'
-TT_MUL = 'MUL'
-TT_DIV = 'DIV'
-TT_LPAREN = 'LPAREN'
-TT_RPAREN = 'RPAREN'
+INT = 'INT'
+FLOAT = 'FLOAT'
+PLUS = 'PLUS'
+MINUS = 'MINUS'
+MUL = 'MUL'
+DIV = 'DIV'
+LPAREN = 'LPAREN'
+RPAREN = 'RPAREN'
+IDENTIFIER = 'IDENTIFIER'
 
-class Token:
-    def __init__(self, type, value):
-        self.type = type
-        self.value = value
-        
-    def __repr__(self):
-        if self.value: return f'{self.type}:{self.value}'
-        return f'{self.type}'
+# Regular expressions for token types
+identifier = r'abcdefghigklmnopqrstuvwsyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+integer = r'0123456789'
+floating = r'0123456789.'
+plus = r'+'
+minus = r'-'
+mul = r'*'
+div = r'/'
+lparen = r'('
+rparen = r')'
 
 # Lexer
-class Lexer:
-    def __init__(self, text):
-        self.text = text
-        self.pos = -1
-        self.current_char = None
-        self.advance()
+def lexer(code):
+    tokens = []
+    
+    remaining = code 
+    while len(remaining) > 0:
+        match = None
 
-    def advance(self):
-        self.pos += 1
-        self.current_char = self.text[self.pos] if self.pos < len(self.text) else None
+        if re.match(identifier, remaining):
+            match = re.match(identifier, remaining)
+            tokens.append(IDENTIFIER, match.group(0))
+        elif re.match(integer, remaining):
+            match = re.match(integer, remaining)
+            tokens.append(INT, match.group(0))
+        elif re.match(floating, remaining):
+            match = re.match(floating, remaining)
+            tokens.append(FLOAT, match.group(0))
+        elif re.match(plus, remaining):
+            match = re.match(plus, remaining)
+            tokens.append(PLUS, match.group(0))
+        elif re.match(minus, remaining):
+             match = re.match(minus, remaining)
+             tokens.append(MINUS, match.group(0))
+        elif re.match(mul, remaining):
+            match = re.match(mul, remaining)
+            tokens.append(MUL, match.group(0))
+        elif re.match(div, remaining):
+            match = re.match(mul, remaining)
+            tokens.append(DIV, match.group(0))
+        elif re.match(lparen, remaining):
+            match = re.match(lparen, remaining)
+            tokens.append(LPAREN, match.group(0))
+        elif re.match(rparen, remaining):
+            match = re.match(rparen, remaining)
+            tokens.append(RPAREN, match.group(0))
 
-    def tokenize(self):
-        tokens = []
+    return tokens
 
-        while self.current_char != None:
-            if self.current_char in '\t':
-                self.advance()
-            elif self.current_char in DIGITS:
-                tokens.append(self.make_number())    
-            elif self.current_char == '+':
-                tokens.append(Token(TT_PLUS))
-                self.advance()
-            elif self.current_char == '-':
-                tokens.append(Token(TT_MINUS))
-                self.advance()
-            elif self.current_char == '/':
-                tokens.append(Token(TT_DIV))
-                self.advance()
-            elif self.current_char == '*':
-                tokens.append(Token(TT_MUL))
-                self.advance()    
-            elif self.current_char == '(':
-                tokens.append(Token(TT_LPAREN))
-                self.advance()    
-            elif self.current_char == ')':
-                tokens.append(Token(TT_RPAREN))
-                self.advance()
-        return tokens
-          
-    def make_number(self):
-        num_str = ''
-        points = 0
+                
         
-        while self.current_char != None and self.current_char in DIGITS + '.':
-            if self.current_char == '.':
-                points += 1
-                num_str += '.'
-                if points == 1: break
-            else: self.current_char += 1
-
-        if points == 0: return Token(TT_INT, int(num_str))
-        else: return Token(TT_FLOAT, float(num_str))
-

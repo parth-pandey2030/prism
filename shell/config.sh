@@ -1,4 +1,6 @@
 #!/bin/bash
 
-alias prism="python3 main.py"
+sudo apt install python3-pip
+
+
 

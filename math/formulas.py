@@ -1,5 +1,5 @@
-from prism.constants import *
-from prism.sum import sigma
+from constants import *
+from repeated.sum import sigma
 from sympy import Symbol 
 
 # Reimann Zeta Function
