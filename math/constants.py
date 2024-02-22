@@ -3,7 +3,6 @@ import math
 pi = 3.1415926535897932384626433832795028841 # Approximate value of pi
 tau = 2*pi # Approximate value of tau
 e = 2.71828182845904523536028747135266244977 # Approximate value of Euler's Number
-i = 1j # Imaginary number i
 infinity = float('inf') # Infinity (if you try math.isfinite(infinity) it will return false)
 phi = golden_ratio = (1+ math.sqrt(5))/2 # The Golden Ratio
 # SI prefixes
