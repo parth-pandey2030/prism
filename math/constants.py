@@ -43,10 +43,10 @@ yobi = 2**80
 
 # units
 mole = avogadros_number = 6.022*10e23 # 1 mole (the number is Avogadro's Number)
-planck_length = 1.6*10e36 # 1 Planck Length in meters
+planck_length = 1.6*10e-36   # 1 Planck Length in meters
 
 
-k = 1.380649*1e23 # Boltzmann constant in joules per kelvin
+k = 1.380649*1e-23 # Boltzmann constant in joules per kelvin
 c = 299792458 # Speed of light in meters per second
 h = 6.62607015*10e34 # Planck's Constant in joule seconds
 G = 6.674*10e-11 # Gravitational constant (value is 6.674*10^-11 N*m^2/kg^2, where N*m^2/kg^2 is the SI unit of G)

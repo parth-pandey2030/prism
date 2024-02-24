@@ -1,6 +1,10 @@
 test_command: |
     prism --version
 
+command: |
+    prism 
+
+    
 
 
     
