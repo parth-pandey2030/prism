@@ -1,2 +1,14 @@
 #!/bin/bash
 
+if [$0 -ne ''] then
+PYCMD=$(cat <<EOF
+import interpreter.lexer as lexer
+file = open($0, "r")
+lexer.Lexer(file)
+file.close()
+)
+EOF
+)
+else
+PYCMD=
+fi

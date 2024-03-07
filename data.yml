@@ -4,7 +4,9 @@ test_command: |
 command: |
     prism 
 
-    
+name: prism
+
+ 
 
 
     
