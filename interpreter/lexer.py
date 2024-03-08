@@ -1,4 +1,4 @@
-import keywords
+import keywords as k
 import re
 
 # Tokens
@@ -13,6 +13,7 @@ RPAREN = 'RPAREN'
 IDENTIFIER = 'IDENTIFIER'
 
 # Regular expressions for token types
+keywords = k.keywordss
 identifier = r'abcdefghigklmnopqrstuvwsyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 integer = r'0123456789'
 floating = r'0123456789.'
@@ -60,6 +61,7 @@ def lexer(code):
             tokens.append(RPAREN, match.group(0))
 
     return tokens
+
 
                 
         

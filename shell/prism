@@ -1,14 +1,20 @@
 #!/bin/bash
 
-if [$0 -ne ''] then
+if [$0 -ne '' && $0 -ne '--version'] then
 PYCMD=$(cat <<EOF
-import interpreter.lexer as lexer
+import interpreter.parser as parser
+
+parser.file = $0
 file = open($0, "r")
-lexer.Lexer(file)
-file.close()
-)
+
+parser(file.read())
 EOF
 )
 else
-PYCMD=
+PYCMD=$(cat <<EOF
+
+EOF
+)
 fi
+
+python3 -c "$PYCMD"
