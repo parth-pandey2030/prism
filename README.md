@@ -16,13 +16,5 @@ Then, run this command to test if Prism has been installed correctly.
 prism --version
 ```
 
-NOTE: In case if you run 
-```bash
-prism --version
-``` 
-and you get an error, try running
-```bash
-sh shell/config.sh
-``` 
-again.
+NOTE: In case if you run ```prism --version``` and you get an error, try running ```sh shell/config.sh``` again.
 
