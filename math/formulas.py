@@ -8,7 +8,7 @@ def zeta(s):
         return 1/(n**s)
     
     n = Symbol('n')
-    return sigma(1, infinity, 'endless_geometric_sum', f, n)
+    return sigma(1, float("inf"), 'endless_geometric_sum', f, n)
 
 # E = mc^2
 def E(m):
