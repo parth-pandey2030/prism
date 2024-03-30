@@ -1,11 +1,4 @@
-from lexer import lexer
-
-file = None
-contents = open(file, "r").read()
-
-# Use Lexer
-lex = lexer(contents)
+from lexer import lexer as lex
 
 def parser(code):
     pass
-
