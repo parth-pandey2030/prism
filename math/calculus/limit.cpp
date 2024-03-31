@@ -28,7 +28,7 @@ END: Cython Metadata */
   #endif
 #endif
 
-#include "Python/Python.h"
+#include "Python.h"
 #ifndef Py_PYTHON_H
     #error Python headers needed to compile C extensions, please install development version of Python.
 #elif PY_VERSION_HEX < 0x02070000 || (0x03000000 <= PY_VERSION_HEX && PY_VERSION_HEX < 0x03030000)
