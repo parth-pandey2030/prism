@@ -1,9 +1,9 @@
 save.sh
 .DS_STORE
-build/
+build/*
 
 # Ignore IDE files
-.vscode/
+.vscode/*
 
 
 
