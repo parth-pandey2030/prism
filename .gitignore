@@ -1,5 +1,6 @@
-# Ignore save file
+# Ignore previously tracked files
 save.sh
+.DS_STORE
 
 # Ignore IDE files
 .vscode/settings.json
