@@ -3,7 +3,7 @@ save.sh
 build/
 
 # Ignore IDE files
-.vscode/settings.json
+.vscode/
 
 
 
