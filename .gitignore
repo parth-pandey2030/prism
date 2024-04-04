@@ -2,5 +2,5 @@
 save.sh
 
 # Ignore IDE files
-.vscode/
+.vscode/settings.json
 
