@@ -2,6 +2,8 @@ save.sh
 .DS_STORE
 build/*
 idea/*
+__pycache__/*
+
 # Ignore IDE files
 .vscode/*
 
