@@ -1,7 +1,7 @@
 save.sh
 .DS_STORE
 build/*
-
+idea/*
 # Ignore IDE files
 .vscode/*
 
