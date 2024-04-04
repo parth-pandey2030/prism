@@ -1,0 +1,6 @@
+# Ignore save file
+save.sh
+
+# Ignore IDE files
+.vscode/
+
