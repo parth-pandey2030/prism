@@ -9,6 +9,6 @@ Prism is a programming language designed partially to make it easy to do math, a
 Prism provides:
 - support for differential and integral calculus
 
-(Logo gotten from [](https://www.svgrepo.com/svg/382617/3d-shape-3d-triangle-shape-geometric-prism-pyramid-shape))
+(Logo gotten from [here](https://www.svgrepo.com/svg/382617/3d-shape-3d-triangle-shape-geometric-prism-pyramid-shape))
 
 
