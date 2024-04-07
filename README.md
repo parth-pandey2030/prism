@@ -16,4 +16,8 @@ If you have something like a copy of this repo, you can run:
 sh shell/config.sh
 ```
 
+This should get Prism ready.
+
+
+
 
