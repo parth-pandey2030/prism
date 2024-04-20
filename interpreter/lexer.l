@@ -1,4 +1,5 @@
 %{
+    #include <stdio.h>
     char tokens = {};
 
     const char INT[] = "INT";
