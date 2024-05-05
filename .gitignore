@@ -3,8 +3,7 @@ save.sh
 build/*
 idea/*
 __pycache__/*
-logo.svg
-.DS_STORE
+
 # Ignore IDE files
 .vscode/*
 
