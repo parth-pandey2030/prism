@@ -13,7 +13,7 @@ Prism provides:
 # Download and configure
 If you have something like a copy of this repo, you can run:
 ```bash
-sh shell/config.sh
+sh scriptsOrBin/config.sh
 ```
 
 This should get Prism ready.
