@@ -14,10 +14,11 @@
     const char COMMENT[] = "COMMENT";
 
     const char DIGITS[] = "0123456789";
+    char[] tokens = {};
 %}
 
 %%
-
+[0-9+] memcpy
 %%
 
 int yywrap() { }
