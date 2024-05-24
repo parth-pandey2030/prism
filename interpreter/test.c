@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+ // This file is literally
+ // just a testing file
 void appendValue(int **array, int *size, int *capacity, int value) {
     // Check if we need to resize the array
     if (*size >= *capacity) {
