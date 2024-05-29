@@ -25,6 +25,7 @@
     int capacity = size + 2;
 %}
 %%
+
 [0-9+] {appendToken(&tokens, &size, &capacity, INT)} // Integers
 [0-9]+\.[0-9]+ {appendToken(&tokens, &size, &capacity, FLOAT)} // Floating point numbers
 [0-9]+\.[0-9]* {appendToken(&tokens, &size, &capacity, FLOAT)}
