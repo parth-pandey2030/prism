@@ -1,1 +1,0 @@
-keywords = r'true|false|maybe|and|or|not|is|while|foreach|in|continue|func|return|import|as|from|if|elif|else|switch|break|default|var|let|const|enum|global|int|float|bool|str|null|array|class|del|stop'
