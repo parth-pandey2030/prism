@@ -3,7 +3,7 @@
 %}
 
 %%
-%token 
+%token INT
 %%
 
 int main() {
