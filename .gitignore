@@ -3,7 +3,9 @@ save.sh
 build/*
 idea/*
 __pycache__/*
-
+interpreter/test.c
+interpreter/test.c
+interpreter/jtest
 # Ignore IDE files
 .vscode/*
 
