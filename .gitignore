@@ -3,7 +3,7 @@ save.sh
 build/*
 __pycache__/*
 interpreter/test.c
-interpreter/test.c
+interpreter/jtest.c
 interpreter/jtest
 interpreter/jtest.dYSM
 
