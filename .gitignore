@@ -6,6 +6,7 @@ __pycache__/*
 interpreter/test.c
 interpreter/test.c
 interpreter/jtest
+interpreter/jtest.dYSM
 # Ignore IDE files
 .vscode/*
 
