@@ -17,57 +17,72 @@ void appendValue(int **array, int *size, int *capacity, int value) {
     (*size)++;
 }
 
-// Structure to hold token definitions
-typedef struct {
-    char *name;
-    regex_t regex;
-} TokenDef;
+// Read the entire file content into a dynamically allocated string
+char* readFile(const char* filename) {
+    FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        fprintf(stderr, "Failed to open %s\n", filename);
+        exit(1);
+    }
+
+    fseek(file, 0, SEEK_END);
+    long length = ftell(file);
+    fseek(file, 0, SEEK_SET);
+
+    char *content = (char *)malloc(length + 1);
+    if (content == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        fclose(file);
+        exit(1);
+    }
+
+    fread(content, 1, length, file);
+    content[length] = '\0';
+
+    fclose(file);
+    return content;
+}
 
 // Define the lexer
 char* lexfile(const char* filedata) {
-    // Open the JSON file
-    FILE *jsonfile = fopen("tokens.json", "r");
-    if (jsonfile == NULL) {
-        fprintf(stderr, "Failed to open tokens.json\n");
-        exit(1);
-    }
-
     // Read the JSON file content
-    char container[457];
-    if (fgets(container, sizeof(container), jsonfile) == NULL) {
-        fprintf(stderr, "Failed to read tokens.json\n");
-        fclose(jsonfile);
-        exit(1);
-    }
-    fclose(jsonfile);
+    char *json_content = readFile("tokens.json");
 
     // Parse the JSON
-    cJSON *json = cJSON_Parse(container);
+    cJSON *json = cJSON_Parse(json_content);
     if (json == NULL) {
         fprintf(stderr, "Failed to parse JSON\n");
+        free(json_content);
         exit(1);
     }
+    free(json_content);
 
     // Extract token definitions from JSON
     int token_count = cJSON_GetArraySize(json);
     TokenDef *token_defs = (TokenDef *)malloc(token_count * sizeof(TokenDef));
     if (token_defs == NULL) {
         fprintf(stderr, "Memory allocation failed\n");
+        cJSON_Delete(json);
         exit(1);
     }
 
     for (int i = 0; i < token_count; i++) {
         cJSON *token_json = cJSON_GetArrayItem(json, i);
-        token_defs[i].name = cJSON_GetObjectItem(token_json, "name")->valuestring;
+        token_defs[i].name = strdup(cJSON_GetObjectItem(token_json, "name")->valuestring);
         const char *pattern = cJSON_GetObjectItem(token_json, "pattern")->valuestring;
 
         // Compile the regex
         if (regcomp(&token_defs[i].regex, pattern, REG_EXTENDED) != 0) {
             fprintf(stderr, "Failed to compile regex for token: %s\n", token_defs[i].name);
+            for (int j = 0; j <= i; j++) {
+                regfree(&token_defs[j].regex);
+                free(token_defs[j].name);
+            }
+            free(token_defs);
+            cJSON_Delete(json);
             exit(1);
         }
     }
-
     cJSON_Delete(json);
 
     // Tokenize the input file data
@@ -77,6 +92,11 @@ char* lexfile(const char* filedata) {
     tokens = (int *)malloc(capacity * sizeof(int));
     if (tokens == NULL) {
         fprintf(stderr, "Memory allocation failed\n");
+        for (int i = 0; i < token_count; i++) {
+            regfree(&token_defs[i].regex);
+            free(token_defs[i].name);
+        }
+        free(token_defs);
         exit(1);
     }
 
@@ -100,6 +120,7 @@ char* lexfile(const char* filedata) {
             free(tokens);
             for (int i = 0; i < token_count; i++) {
                 regfree(&token_defs[i].regex);
+                free(token_defs[i].name);
             }
             free(token_defs);
             exit(1);
@@ -111,6 +132,12 @@ char* lexfile(const char* filedata) {
     char *output = (char *)malloc(output_size);
     if (output == NULL) {
         fprintf(stderr, "Memory allocation failed\n");
+        for (int i = 0; i < token_count; i++) {
+            regfree(&token_defs[i].regex);
+            free(token_defs[i].name);
+        }
+        free(tokens);
+        free(token_defs);
         exit(1);
     }
     output[0] = '\0';
@@ -123,6 +150,12 @@ char* lexfile(const char* filedata) {
             char *new_output = (char *)realloc(output, output_size);
             if (new_output == NULL) {
                 fprintf(stderr, "Memory reallocation failed\n");
+                for (int j = 0; j < token_count; j++) {
+                    regfree(&token_defs[j].regex);
+                    free(token_defs[j].name);
+                }
+                free(tokens);
+                free(token_defs);
                 free(output);
                 exit(1);
             }
@@ -135,6 +168,7 @@ char* lexfile(const char* filedata) {
     // Clean up
     for (int i = 0; i < token_count; i++) {
         regfree(&token_defs[i].regex);
+        free(token_defs[i].name);
     }
     free(token_defs);
     free(tokens);
