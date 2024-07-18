@@ -1,4 +1,5 @@
 #include "lexer.h"
+#include "tokens.h"
 #include <string.h>
 
 // Append a value to an array
@@ -17,73 +18,86 @@ void appendValue(int **array, int *size, int *capacity, int value) {
     (*size)++;
 }
 
-// Read the entire file content into a dynamically allocated string
-char* readFile(const char* filename) {
-    FILE *file = fopen(filename, "r");
-    if (file == NULL) {
-        fprintf(stderr, "Failed to open %s\n", filename);
-        exit(1);
-    }
+// Token definitions
+static const char *token_names[] = {
+    TOKEN_IDENTIFIER,
+    TOKEN_INT,
+    TOKEN_FLOAT,
+    TOKEN_IRRATIONAL,
+    TOKEN_BOOLEAN,
+    TOKEN_COMPLEX,
+    TOKEN_STRING,
+    TOKEN_ARRAY,
+    TOKEN_SET,
+    TOKEN_HASH,
+    TOKEN_OPERATOR,
+    TOKEN_PUNCTUATION,
+    TOKEN_FOR_LOOP,
+    TOKEN_WHILE_LOOP,
+    TOKEN_FINISHED_LOOP,
+    TOKEN_CONTINUE_LOOP,
+    TOKEN_BREAK_LOOP,
+    TOKEN_COMMENT,
+    TOKEN_WHITESPACE,
+    TOKEN_NEW_LINE,
+    TOKEN_INFINITY,
+    TOKEN_NULL,
+    TOKEN_UNDEFINED,
+    TOKEN_NAN,
+    TOKEN_FUNCTION
+};
 
-    fseek(file, 0, SEEK_END);
-    long length = ftell(file);
-    fseek(file, 0, SEEK_SET);
-
-    char *content = (char *)malloc(length + 1);
-    if (content == NULL) {
-        fprintf(stderr, "Memory allocation failed\n");
-        fclose(file);
-        exit(1);
-    }
-
-    fread(content, 1, length, file);
-    content[length] = '\0';
-
-    fclose(file);
-    return content;
-}
+static const char *token_patterns[] = {
+    PATTERN_IDENTIFIER,
+    PATTERN_INT,
+    PATTERN_FLOAT,
+    PATTERN_IRRATIONAL,
+    PATTERN_BOOLEAN,
+    PATTERN_COMPLEX,
+    PATTERN_STRING,
+    PATTERN_ARRAY,
+    PATTERN_SET,
+    PATTERN_HASH,
+    PATTERN_OPERATOR,
+    PATTERN_PUNCTUATION,
+    PATTERN_FOR_LOOP,
+    PATTERN_WHILE_LOOP,
+    PATTERN_FINISHED_LOOP,
+    PATTERN_CONTINUE_LOOP,
+    PATTERN_BREAK_LOOP,
+    PATTERN_COMMENT,
+    PATTERN_WHITESPACE,
+    PATTERN_NEW_LINE,
+    PATTERN_INFINITY,
+    PATTERN_NULL,
+    PATTERN_UNDEFINED,
+    PATTERN_NAN,
+    PATTERN_FUNCTION
+};
 
 // Define the lexer
 char* lexfile(const char* filedata) {
-    // Read the JSON file content
-    char *json_content = readFile("tokens.json");
-
-    // Parse the JSON
-    cJSON *json = cJSON_Parse(json_content);
-    if (json == NULL) {
-        fprintf(stderr, "Failed to parse JSON\n");
-        free(json_content);
-        exit(1);
-    }
-    free(json_content);
-
-    // Extract token definitions from JSON
-    int token_count = cJSON_GetArraySize(json);
+    int token_count = sizeof(token_names) / sizeof(token_names[0]);
     TokenDef *token_defs = (TokenDef *)malloc(token_count * sizeof(TokenDef));
     if (token_defs == NULL) {
         fprintf(stderr, "Memory allocation failed\n");
-        cJSON_Delete(json);
         exit(1);
     }
 
     for (int i = 0; i < token_count; i++) {
-        cJSON *token_json = cJSON_GetArrayItem(json, i);
-        token_defs[i].name = strdup(cJSON_GetObjectItem(token_json, "name")->valuestring);
-        const char *pattern = cJSON_GetObjectItem(token_json, "pattern")->valuestring;
+        token_defs[i].name = strdup(token_names[i]);
 
         // Compile the regex
-        if (regcomp(&token_defs[i].regex, pattern, REG_EXTENDED) != 0) {
+        if (regcomp(&token_defs[i].regex, token_patterns[i], REG_EXTENDED) != 0) {
             fprintf(stderr, "Failed to compile regex for token: %s\n", token_defs[i].name);
             for (int j = 0; j <= i; j++) {
                 regfree(&token_defs[j].regex);
                 free(token_defs[j].name);
             }
             free(token_defs);
-            cJSON_Delete(json);
             exit(1);
         }
     }
-    cJSON_Delete(json);
 
     // Tokenize the input file data
     int *tokens = NULL;
