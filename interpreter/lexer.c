@@ -19,6 +19,11 @@ void appendValue(int **array, int *size, int *capacity, int value) {
 }
 
 // Token definitions
+typedef struct {
+    char *name;
+    regex_t regex;
+} TokenDef;
+
 static const char *token_names[] = {
     TOKEN_IDENTIFIER,
     TOKEN_INT,

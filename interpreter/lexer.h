@@ -6,11 +6,6 @@
 #include <stdlib.h>
 #include "cJSON.h"
 
-// Structure to hold token definitions
-typedef struct {
-    char *name;
-    regex_t regex;
-} TokenDef;
 
 // Function to append a value to a dynamic array
 void appendValue(int **array, int *size, int *capacity, int value);
