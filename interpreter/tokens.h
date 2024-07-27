@@ -39,7 +39,7 @@
 #define PATTERN_ARRAY "^[\\[\\]\\,\\s]*$"
 #define PATTERN_SET "^()$"
 #define PATTERN_HASH "^{}$"
-#define PATTERN_OPERATOR "^[+\\-*/%&|\\^~<>!]+$"
+#define PATTERN_OPERATOR "^[+\\-]+$"
 #define PATTERN_PUNCTUATION "^[{}()[\\]\\.\\,;:]$"
 #define PATTERN_FOR_LOOP "^for$"
 #define PATTERN_WHILE_LOOP "^while$"
