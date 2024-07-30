@@ -120,6 +120,21 @@ char* lexfile(const char* filedata) {
     }
 
     const char *cursor = filedata;
+    char **matched_pieces = NULL;
+    int matched_size = 0;
+    int matched_capacity = 2;  // Initial capacity
+    matched_pieces = (char **)malloc(matched_capacity * sizeof(char *));
+    if (matched_pieces == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        for (int i = 0; i < token_count; i++) {
+            regfree(&token_defs[i].regex);
+            free(token_defs[i].name);
+        }
+        free(token_defs);
+        free(tokens);
+        exit(1);
+    }
+
     while (*cursor != '\0') {
         int matched = 0;
         for (int i = 0; i < token_count; i++) {
@@ -128,6 +143,25 @@ char* lexfile(const char* filedata) {
                 // We have a match
                 int match_length = match.rm_eo;
                 appendValue(&tokens, &size, &capacity, i);
+
+                // Store the matched piece of code
+                char *piece = strndup(cursor, match_length);
+                if (matched_size >= matched_capacity) {
+                    matched_capacity *= 2;
+                    matched_pieces = (char **)realloc(matched_pieces, matched_capacity * sizeof(char *));
+                    if (matched_pieces == NULL) {
+                        fprintf(stderr, "Memory reallocation failed\n");
+                        free(tokens);
+                        for (int j = 0; j < token_count; j++) {
+                            regfree(&token_defs[j].regex);
+                            free(token_defs[j].name);
+                        }
+                        free(token_defs);
+                        exit(1);
+                    }
+                }
+                matched_pieces[matched_size++] = piece;
+
                 cursor += match_length;
                 matched = 1;
                 break;
@@ -142,11 +176,15 @@ char* lexfile(const char* filedata) {
                 free(token_defs[i].name);
             }
             free(token_defs);
+            for (int i = 0; i < matched_size; i++) {
+                free(matched_pieces[i]);
+            }
+            free(matched_pieces);
             exit(1);
         }
     }
 
-    // Create a string to return the tokens
+    // Create a string to return the tokens and their matched pieces
     size_t output_size = 1024;
     char *output = (char *)malloc(output_size);
     if (output == NULL) {
@@ -157,13 +195,18 @@ char* lexfile(const char* filedata) {
         }
         free(tokens);
         free(token_defs);
+        for (int i = 0; i < matched_size; i++) {
+            free(matched_pieces[i]);
+        }
+        free(matched_pieces);
         exit(1);
     }
     output[0] = '\0';
 
     for (int i = 0; i < size; i++) {
         const char *token_name = token_defs[tokens[i]].name;
-        size_t needed_size = strlen(output) + strlen(token_name) + 2;
+        const char *matched_piece = matched_pieces[i];
+        size_t needed_size = strlen(output) + strlen(token_name) + strlen(matched_piece) + 4;
         if (needed_size > output_size) {
             output_size *= 2;
             char *new_output = (char *)realloc(output, output_size);
@@ -176,11 +219,17 @@ char* lexfile(const char* filedata) {
                 free(tokens);
                 free(token_defs);
                 free(output);
+                for (int i = 0; i < matched_size; i++) {
+                    free(matched_pieces[i]);
+                }
+                free(matched_pieces);
                 exit(1);
             }
             output = new_output;
         }
         strcat(output, token_name);
+        strcat(output, ":");
+        strcat(output, matched_piece);
         strcat(output, " ");
     }
 
@@ -191,6 +240,10 @@ char* lexfile(const char* filedata) {
     }
     free(token_defs);
     free(tokens);
+    for (int i = 0; i < matched_size; i++) {
+        free(matched_pieces[i]);
+    }
+    free(matched_pieces);
 
     return output;
 }
