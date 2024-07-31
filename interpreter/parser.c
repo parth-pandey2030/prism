@@ -1,6 +1,6 @@
 #include "parser.h"
 
-struct parser {
+HashTable parser {
 
 };
 
@@ -26,8 +26,8 @@ void out(const char* filename, const cJSON* data) {
     fclose(f);
 }
 
-struct parser parsefile(const char* filedata) {
-    struct parser AST;
+ HashTable parser parsefile(const char* filedata) {
+    HashTable parser AST;
     
     return AST;
 }
