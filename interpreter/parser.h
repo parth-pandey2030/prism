@@ -8,6 +8,8 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
+
+
 int starts_with(const char* string, const char* substring);
 HashTable* parser parsefile(const char* filedata); // Parses file and creates AST
 cJSON* converter(const HashTable* obj); // Converts AST to JSON
