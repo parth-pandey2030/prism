@@ -20,5 +20,6 @@ void insert(HashTable* table, const char* key, const char* value);
 char* search(HashTable* table, const char* key);
 void delete(HashTable* table, const char* key);
 void iterate(HashTable* table, void (*func)(const char*, const char*));
+char* to_json(HashTable* table);
 
 #endif // HASH_TABLE_H

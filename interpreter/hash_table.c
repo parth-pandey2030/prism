@@ -118,3 +118,18 @@ void iterate(HashTable* table, void (*func)(const char*, const char*)) {
         }
     }
 }
+
+// Convert hash table to JSON string
+char* to_json(HashTable* table) {
+    cJSON* json = cJSON_CreateObject();
+    for (int i = 0; i < TABLE_SIZE; ++i) {
+        Entry* entry = table->entries[i];
+        while (entry != NULL) {
+            cJSON_AddStringToObject(json, entry->key, entry->value);
+            entry = entry->next;
+        }
+    }
+    char* json_string = cJSON_Print(json);
+    cJSON_Delete(json);
+    return json_string;
+}
