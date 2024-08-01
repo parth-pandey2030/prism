@@ -26,6 +26,8 @@ typedef struct {
 
 static const char *token_names[] = {
     TOKEN_IDENTIFIER,
+    TOKEN_LET,
+    TOKEN_CONST,
     TOKEN_INT,
     TOKEN_FLOAT,
     TOKEN_IRRATIONAL,
@@ -54,6 +56,8 @@ static const char *token_names[] = {
 
 static const char *token_patterns[] = {
     PATTERN_IDENTIFIER,
+    PATTERN_LET,
+    PATTERN_CONST,
     PATTERN_INT,
     PATTERN_FLOAT,
     PATTERN_IRRATIONAL,

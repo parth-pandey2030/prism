@@ -4,8 +4,7 @@
 #include <regex.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "cJSON.h"
-
+#include "../lib/cJSON.h"
 
 // Function to append a value to a dynamic array
 void appendValue(int **array, int *size, int *capacity, int value);

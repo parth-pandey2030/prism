@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "hash_table.h"
+#include "../lib/cJSON.h"
 
 // Simple hash function
 unsigned int hash(const char* key) {

@@ -51,24 +51,30 @@ int starts_with(const char *string, const char *substring) {
     return 0; // Substring matches at the beginning
 }
 
-HashTable parsefile(const char* filedata) {
+HashTable* parsefile(const char* filedata) {
     HashTable* AST = create_table();
     const char* lex = lexfile(filedata);
 
     if (filedata == NULL) {
-        return *AST;
+        return AST;
     }
 
     HashTable* declarations = create_table();
     HashTable* raw = create_table();
+    HashTable* init = create_table();
 
     // Parse the file
     if (lex == NULL) {
-    return *AST;
+    return AST;
     }
 
     while (lex != NULL) {
-        if (starts_with(lex, "let") || starts_with(lex, "const") || starts_with(lex, "for") || starts_with(lex, "while")) {
+        if (
+            strstr(lex, "let") || 
+            strstr(lex, "const") || 
+            strstr(lex, "for") || 
+            strstr(lex, "while")
+        ) {
             lex = lexfile(lex); // Move to the next token
             if (lex == NULL) {
                 break;
@@ -86,9 +92,8 @@ HashTable parsefile(const char* filedata) {
                 break;
             }
 
-            // Insert name and value into the declarations and raw structures
+            // Insert name and value into the declarations table
             insert(declarations, name, value);
-            insert(raw, name, value);
         } else if (
             strstr(lex, "+") || 
             strstr(lex, "-") ||
@@ -98,23 +103,87 @@ HashTable parsefile(const char* filedata) {
             strstr(lex, "^") ||
             strstr(lex, "=") ||
             strstr(lex, "<") ||
-            strstr(lex, ">") ||
+            strstr(lex, ">")
         ) {
             lex = lexfile(lex);
             if (lex == NULL) {
                 break;
             }
 
-            
+            char* left = lex;
+            lex = lexfile(lex);
+            if (lex == NULL) {
+                break;
+            }
+
+            char* right = lex;
+            lex = lexfile(lex);
+            if (lex == NULL) {
+                break;
+            }
+
+            insert(init, left, right);
+        } else if (
+            strstr(lex, "and") ||
+            strstr(lex, "or") ||
+            strstr(lex, "not")
+        ) {
+            lex = lexfile(lex);
+            if (lex == NULL) {
+                break;
+            }
+
+            char* left = lex;
+            lex = lexfile(lex);
+            if (lex == NULL) {
+                break;
+            }
+
+            char* right = lex;
+            lex = lexfile(lex);
+            if (lex == NULL) {
+                break;
+            }
+
+            insert(init, left, right);
+        }  else if (
+                    strstr(lex, "int") || 
+                    strstr(lex, "float") || 
+                    strstr(lex, "string") ||
+                    strstr(lex, "bool") ||
+                    strstr(lex, "irrational") ||
+                    strstr(lex, "complex") ||
+                    strstr(lex, "array") ||
+                    strstr(lex, "set") ||
+                    strstr(lex, "infinity") ||
+                    strstr(lex, "nan") ||
+                    strstr(lex, "null") ||
+                    strstr(lex, "undefined") ||
+                    strstr(lex, "function")
+        ) {
+            char* before = lex;
+            lex = lexfile(lex);
+            if (lex == NULL) {
+                break;
+            }
+            if (before == NULL) {
+                insert(raw, before, before);
+            } else {
+                insert(init, before, lex);
+            }
+        } else {
+            break;
         }
     }
 
+    insert(declarations, "init", to_json(init));
     insert(AST, "declarations", to_json(declarations));
     insert(AST, "raw", to_json(raw));
     free_table(declarations);
     free_table(raw);
+    free_table(init);
     free(lex);
 
     // Return the AST
-    return *AST;
+    return AST;
 }
