@@ -1,5 +1,6 @@
 #include "parser.h"
 
+// Utility function to create JSON object from a hash table
 cJSON* converter(const HashTable* AST) {
     if (AST == NULL) {
         return NULL;
@@ -21,6 +22,7 @@ cJSON* converter(const HashTable* AST) {
     return json;
 }
 
+// Function to write JSON data to a file
 void out(const char* filename, const cJSON* data) {
     if (data == NULL || filename == NULL) {
         return;
@@ -42,31 +44,31 @@ void out(const char* filename, const cJSON* data) {
     free(json_string);
 }
 
+// Function to check if a string starts with a substring
 int starts_with(const char *string, const char *substring) {
     while (*substring) {
         if (*substring++ != *string++) {
-            return 1; // Substring does not match at the beginning
+            return 0; // Substring does not match at the beginning
         }
     }
-    return 0; // Substring matches at the beginning
+    return 1; // Substring matches at the beginning
 }
 
+// Function to parse file data and create an AST
 HashTable* parsefile(const char* filedata) {
     HashTable* AST = create_table();
-    const char* lex = lexfile(filedata);
-
     if (filedata == NULL) {
+        return AST;
+    }
+
+    const char* lex = lexfile(filedata);
+    if (lex == NULL) {
         return AST;
     }
 
     HashTable* declarations = create_table();
     HashTable* raw = create_table();
     HashTable* init = create_table();
-
-    // Parse the file
-    if (lex == NULL) {
-    return AST;
-    }
 
     while (lex != NULL) {
         if (
@@ -75,24 +77,23 @@ HashTable* parsefile(const char* filedata) {
             strstr(lex, "for") || 
             strstr(lex, "while")
         ) {
-            lex = lexfile(lex); // Move to the next token
+            lex = lexfile(lex);
             if (lex == NULL) {
                 break;
             }
 
-            char* name = lex; // Get the name
-            lex = lexfile(lex); // Move to the next token
+            char* name = strdup(lex);
+            lex = lexfile(lex);
             if (lex == NULL) {
                 break;
             }
 
-            char* value = lex; // Get the value
-            lex = lexfile(lex); // Move to the next token
+            char* value = strdup(lex);
+            lex = lexfile(lex);
             if (lex == NULL) {
                 break;
             }
 
-            // Insert name and value into the declarations table
             insert(declarations, name, value);
         } else if (
             strstr(lex, "+") || 
@@ -110,13 +111,13 @@ HashTable* parsefile(const char* filedata) {
                 break;
             }
 
-            char* left = lex;
+            char* left = strdup(lex);
             lex = lexfile(lex);
             if (lex == NULL) {
                 break;
             }
 
-            char* right = lex;
+            char* right = strdup(lex);
             lex = lexfile(lex);
             if (lex == NULL) {
                 break;
@@ -133,35 +134,35 @@ HashTable* parsefile(const char* filedata) {
                 break;
             }
 
-            char* left = lex;
+            char* left = strdup(lex);
             lex = lexfile(lex);
             if (lex == NULL) {
                 break;
             }
 
-            char* right = lex;
+            char* right = strdup(lex);
             lex = lexfile(lex);
             if (lex == NULL) {
                 break;
             }
 
             insert(init, left, right);
-        }  else if (
-                    strstr(lex, "int") || 
-                    strstr(lex, "float") || 
-                    strstr(lex, "string") ||
-                    strstr(lex, "bool") ||
-                    strstr(lex, "irrational") ||
-                    strstr(lex, "complex") ||
-                    strstr(lex, "array") ||
-                    strstr(lex, "set") ||
-                    strstr(lex, "infinity") ||
-                    strstr(lex, "nan") ||
-                    strstr(lex, "null") ||
-                    strstr(lex, "undefined") ||
-                    strstr(lex, "function")
+        } else if (
+            strstr(lex, "int") || 
+            strstr(lex, "float") || 
+            strstr(lex, "string") ||
+            strstr(lex, "bool") ||
+            strstr(lex, "irrational") ||
+            strstr(lex, "complex") ||
+            strstr(lex, "array") ||
+            strstr(lex, "set") ||
+            strstr(lex, "infinity") ||
+            strstr(lex, "nan") ||
+            strstr(lex, "null") ||
+            strstr(lex, "undefined") ||
+            strstr(lex, "function")
         ) {
-            char* before = lex;
+            char* before = strdup(lex);
             lex = lexfile(lex);
             if (lex == NULL) {
                 break;
@@ -169,7 +170,12 @@ HashTable* parsefile(const char* filedata) {
             if (before == NULL) {
                 insert(raw, before, before);
             } else {
-                insert(init, before, lex);
+                insert(init, before, strdup(lex));
+            }
+        } else if (strstr(lex, "punctuation")) {
+            lex = lexfile(lex);
+            if (lex == NULL) {
+                break;
             }
         } else {
             break;
@@ -179,11 +185,10 @@ HashTable* parsefile(const char* filedata) {
     insert(declarations, "init", to_json(init));
     insert(AST, "declarations", to_json(declarations));
     insert(AST, "raw", to_json(raw));
+
     free_table(declarations);
     free_table(raw);
     free_table(init);
-    free(lex);
 
-    // Return the AST
     return AST;
 }
