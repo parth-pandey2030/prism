@@ -1,7 +1,7 @@
 #include "parser.h"
 
 int main() {
-    HashTable* table = parsefile("filedata");
+    HashTable* table = parsefile("hello");
     if (table == NULL) {
         return 1;
     }
@@ -11,6 +11,6 @@ int main() {
         return 1;
     }
 
-    out("output_name.json", json);
+    out("hello_parsed.json", json);
     return 0;
 }
