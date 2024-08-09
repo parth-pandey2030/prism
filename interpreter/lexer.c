@@ -1,6 +1,7 @@
 #include "lexer.h"
 #include "tokens.h"
 #include <string.h>
+#include <regex.h>
 
 // Append a value to an array
 void appendValue(int **array, int *size, int *capacity, int value) {
@@ -51,7 +52,9 @@ static const char *token_names[] = {
     TOKEN_NULL,
     TOKEN_UNDEFINED,
     TOKEN_NAN,
-    TOKEN_FUNCTION
+    TOKEN_FUNCTION,
+    TOKEN_RETURN,
+    TOKEN_PRINT
 };
 
 static const char *token_patterns[] = {
@@ -67,7 +70,8 @@ static const char *token_patterns[] = {
     PATTERN_ARRAY,
     PATTERN_SET,
     PATTERN_HASH,
-    PATTERN_OPERATOR,
+    PATTERN_OPERATOR_COMPOUND,
+    PATTERN_OPERATOR_SINGLE,
     PATTERN_PUNCTUATION,
     PATTERN_FOR_LOOP,
     PATTERN_WHILE_LOOP,
@@ -81,7 +85,9 @@ static const char *token_patterns[] = {
     PATTERN_NULL,
     PATTERN_UNDEFINED,
     PATTERN_NAN,
-    PATTERN_FUNCTION
+    PATTERN_FUNCTION,
+    PATTERN_RETURN,
+    PATTERN_PRINT
 };
 
 // Define the lexer

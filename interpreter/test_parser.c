@@ -1,7 +1,7 @@
 #include "parser.h"
 
 int main() {
-    HashTable* table = parsefile("hello");
+    HashTable* table = parsefile("print");
     if (table == NULL) {
         return 1;
     }

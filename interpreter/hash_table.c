@@ -1,7 +1,4 @@
-#include <stdlib.h>
-#include <string.h>
 #include "hash_table.h"
-#include "../lib/cJSON.h"
 
 // Simple hash function
 unsigned int hash(const char* key) {
@@ -133,4 +130,32 @@ char* to_json(HashTable* table) {
     char* json_string = cJSON_Print(json);
     cJSON_Delete(json);
     return json_string;
+}
+
+// Convert JSON string to HashTable
+HashTable* from_json(const char* json_string) {
+    // Parse the JSON string
+    cJSON* json = cJSON_Parse(json_string);
+    if (json == NULL) {
+        fprintf(stderr, "Error parsing JSON: %s\n", cJSON_GetErrorPtr());
+        return NULL;
+    }
+
+    // Create a new hash table
+    HashTable* table = create_table();
+
+    // Iterate over all key-value pairs in the JSON object
+    cJSON* current_element = NULL;
+    cJSON_ArrayForEach(current_element, json) {
+        const char* key = current_element->string;
+        const char* value = cJSON_GetStringValue(current_element);
+        
+        if (key != NULL && value != NULL) {
+            insert(table, key, value);
+        }
+    }
+
+    // Clean up and return the hash table
+    cJSON_Delete(json);
+    return table;
 }

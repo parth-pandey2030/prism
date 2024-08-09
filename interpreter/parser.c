@@ -177,6 +177,17 @@ HashTable* parsefile(const char* filedata) {
             if (lex == NULL) {
                 break;
             }
+        } else if (strstr(lex, "print")) {
+            lex = lexfile(lex);
+            if (lex == NULL) {
+                break;
+            }
+
+            char* inside = strdup(lex);
+            if (inside == NULL) {
+                break;
+            }
+            insert(init, "print", strdup(lex));
         } else {
             break;
         }

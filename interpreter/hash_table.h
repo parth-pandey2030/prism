@@ -3,6 +3,11 @@
 
 #define TABLE_SIZE 100
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "../lib/cJSON.h"
+
 typedef struct Entry {
     char* key;
     char* value;
@@ -12,6 +17,9 @@ typedef struct Entry {
 typedef struct {
     Entry* entries[TABLE_SIZE];
 } HashTable;
+
+// Macro for array-like access
+#define HT_GET(table, key) search((table), (key))
 
 unsigned int hash(const char* key);
 HashTable* create_table();

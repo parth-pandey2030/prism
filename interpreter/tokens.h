@@ -59,6 +59,8 @@
 #define TOKEN_UNDEFINED "undefined"
 #define TOKEN_NAN "nan"
 #define TOKEN_FUNCTION "function"
+#define TOKEN_RETURN "return"
+#define TOKEN_PRINT "print"
 
 // Token patterns
 
@@ -69,19 +71,20 @@
 #define PATTERN_FLOAT "^[0-9]+\\.[0-9]+$"
 #define PATTERN_IRRATIONAL "^[0-9]+\\.[0-9]+[eE][+-]?[0-9]+$"
 #define PATTERN_BOOLEAN "^(true|false)$"
-#define PATTERN_COMPLEX "^[0-9]+\\.[0-9]+[iJ][+-]?[0-9]+$"
-#define PATTERN_STRING "^[a-zA-Z_][a-zA-Z0-9_]*$"
+#define PATTERN_COMPLEX "^([+-]?([0-9]+\\.?[0-9]*|\\.[0-9]+))([+-]([0-9]+\\.?[0-9]*|\\.[0-9]+)[iIijJ])?)$"
+#define PATTERN_STRING "^\"[^\"]*\"$"
 #define PATTERN_ARRAY "^[\\[\\]\\,\\s]*$"
-#define PATTERN_SET "^()$"
-#define PATTERN_HASH "^{}$"
-#define PATTERN_OPERATOR "^[+\\-]+$"
-#define PATTERN_PUNCTUATION "^[{}()[\\]\\.\\,;:]$"
+#define PATTERN_SET "^\\{[^\\}]*\\}$"
+#define PATTERN_HASH "^\\{[^\\}]*\\}$"
+#define PATTERN_OPERATOR_COMPOUND "^(\\+=|-=|\\*=|/=|%=|\\^=|\\*=|\\+\\+|--|\\*=|\\+\\+|--|\\*\\*|<<|>>|&&|\\|\\|)$"
+#define PATTERN_OPERATOR_SINGLE "^[+\\-*/%^!<>=&|]$"
+#define PATTERN_PUNCTUATION "^[{}()[\\],;:]$"
 #define PATTERN_FOR_LOOP "^for$"
 #define PATTERN_WHILE_LOOP "^while$"
 #define PATTERN_FINISHED_LOOP "^finish$"
 #define PATTERN_CONTINUE_LOOP "^continue$"
 #define PATTERN_BREAK_LOOP "^break$"
-#define PATTERN_COMMENT "^#//.*/*$"
+#define PATTERN_COMMENT "^//.*$" // For single-line comments
 #define PATTERN_WHITESPACE "^[ \t]+$"
 #define PATTERN_NEW_LINE "^\\n$"
 #define PATTERN_INFINITY "^inf$"
@@ -89,5 +92,7 @@
 #define PATTERN_UNDEFINED "^undefined$"
 #define PATTERN_NAN "^nan$"
 #define PATTERN_FUNCTION "^func$"
+#define PATTERN_RETURN "^return$"
+#define PATTERN_PRINT "^print$"
 
 #endif // TOKENS_H
