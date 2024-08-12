@@ -4,8 +4,10 @@
 #include "parser.h"
 #include "../lib/cJSON.h"
 #include "hash_table.h"
+#include <stdlib.h>
 #include <stdio.h>
-
-void execute(const HashTable* AST);
+void interpret_and_execute(const cJSON* json);
+void execute_line(const char* code_line);
+void execute(const char* code);
 
 #endif
