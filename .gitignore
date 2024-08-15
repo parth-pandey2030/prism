@@ -2,11 +2,10 @@ save.sh
 .DS_STORE
 build/*
 __pycache__/*
-interpreter/test.c
-interpreter/jtest.c
-interpreter/jtest
-interpreter/jtest.dYSM
 
+# Testing files
+interpreter/tests/*
+interpreter/jtest.DYSM
 
 # Ignore IDE files
 .vscode/*
