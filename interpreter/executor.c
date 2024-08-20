@@ -79,12 +79,22 @@ void execute(const char* code) {
     if (code == NULL || strlen(code) == 0) {
         return;
     }
+    
+    // Create a writable copy of the code
+    char* code_copy = strdup(code);
+    if (code_copy == NULL) {
+        perror("Failed to allocate memory");
+        return;
+    }
+
     int line_number = 0;
-    char *line = strtok(code, "\n");
+    char *line = strtok(code_copy, "\n");
 
     while (line != NULL) {
         line_number++;
         execute_line(line);
         line = strtok(NULL, "\n");
     }
+
+    free(code_copy);
 }
