@@ -79,6 +79,12 @@ void execute(const char* code) {
     if (code == NULL || strlen(code) == 0) {
         return;
     }
+    int line_number = 0;
+    char *line = strtok(code, "\n");
 
-
+    while (line != NULL) {
+        line_number++;
+        execute_line(line);
+        line = strtok(NULL, "\n");
+    }
 }
