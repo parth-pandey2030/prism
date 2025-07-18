@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "Downloading sub-modules.... "
+
+
 echo "Activating prism.... "
 chmod +x prism/shell/prism
 echo "Complete"

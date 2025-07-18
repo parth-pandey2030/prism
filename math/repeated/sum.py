@@ -27,3 +27,4 @@ def geometric_sum(upper_bound: int, a: float, r: float):
     """
     return a / (1 - r) if upper_bound == float('inf') else a(r ** upper_bound - 1)
     
+def ramanujan_summation()
