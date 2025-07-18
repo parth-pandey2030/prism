@@ -36,5 +36,5 @@ Prism does not yet have an independent website. Please wait!
 
 The Prism logo was acquirred from [here](https://www.svgrepo.com/svg/382617/3d-shape-3d-triangle-shape-geometric-prism-pyramid-shape), however was then slightly edited.
 
-NOTE: Some credits for individual files are inside them. For example, the credits for the JSON used in testing for the [modules/data.py](https://github.com/parth-pandey2030/prism/blob/main/modules/data.py) are written in a comment found in line 16 of the program.
+NOTE: Some credits for individual files are inside them. For example, the credits for the JSON used in testing for the [modules/data.py](https://github.com/parth-pandey2030/prism/blob/main/modules/data.py) are written in a comment found in line 17 of the program.
 
