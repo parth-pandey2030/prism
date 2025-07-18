@@ -3,7 +3,7 @@
 </h1><br>
 
 # Prism
-Prism is a programming language created by Parth Pandey in January 2024 designed partially to make it easy to do math, as all parts of computing use math.
+Prism is an interpreted programming language created by Parth Pandey in January 2024 designed partially to make it easy to do math, as all parts of computing use math.
 
 Prism provides:
 - support for easy, yet complex, mathematical computations
