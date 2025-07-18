@@ -78,7 +78,7 @@
 #define PATTERN_HASH "^\\{[^\\}]*\\}$"
 #define PATTERN_OPERATOR_COMPOUND "^(\\+=|-=|\\*=|/=|%=|\\^=|\\*=|\\+\\+|--|\\*=|\\+\\+|--|\\*\\*|<<|>>|&&|\\|\\|)$"
 #define PATTERN_OPERATOR_SINGLE "^[+\\-*/%^!<>=&|]$"
-#define PATTERN_PUNCTUATION "^[{}()[\\],;:]$"
+#define PATTERN_PUNCTUATION "^[{}()\\[\\],;:]$"
 #define PATTERN_FOR_LOOP "^for$"
 #define PATTERN_WHILE_LOOP "^while$"
 #define PATTERN_FINISHED_LOOP "^finish$"
