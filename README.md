@@ -9,14 +9,13 @@ Prism provides:
 - support for easy, yet complex, mathematical computations
 - a nice Julia-based plotting library
 
-(Logo gotten from [here](https://www.svgrepo.com/svg/382617/3d-shape-3d-triangle-shape-geometric-prism-pyramid-shape))
 
 # Download and configure
 Download options are not ready yet. Please wait!
 
 This should get Prism ready.
 
-# Info:
+# Other resources
 Other READMEs: 
 
 [The interpreter](https://github.com/parth-pandey2030/prism/blob/main/interpreter/README.md) 
@@ -31,8 +30,10 @@ Other READMEs:
 
 [The module for working with the system (like C) in Prism](https://github.com/parth-pandey2030/prism/blob/main/modules/system/README.md)
 
+Prism does not yet have an independent website. Please wait!
 
+# Credits
 
-
+The Prism logo was acquirred from [here](https://www.svgrepo.com/svg/382617/3d-shape-3d-triangle-shape-geometric-prism-pyramid-shape), however was then slightly edited.
 
 
