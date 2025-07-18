@@ -8,7 +8,7 @@ Prism is an interpreted programming language created by Parth Pandey in January 
 Prism provides:
 - support for easy, yet complex, mathematical computations
 - a nice Julia-based plotting library
-
+- fast computation using C, C++, and Julia
 
 # Download and configure
 Download options are not ready yet. Please wait!
