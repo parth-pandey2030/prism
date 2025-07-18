@@ -2,7 +2,8 @@
 #include "limits/limit.h"
 
 // Function to calculate the limit of a function as it approaches a given value
-double derivative(double (*func)(double), double x, double h) {
-    return LIMIT(func, x, h);
+template <typename T>
+T derivative(T (*func)(T), T x, T h) {
+    return LIMIT((func(x + h) - func(x)) / h, x, h);
 }
 

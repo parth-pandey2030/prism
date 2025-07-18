@@ -23,6 +23,8 @@ Other READMEs:
 
 [The library for some programs used](https://github.com/parth-pandey2030/prism/blob/main/lib/README.md)
 
+[The configuring scripts](https://github.com/parth-pandey2030/prism/blob/main/shell/README.md)
+
 [External modules for Prism code that you can import](https://github.com/parth-pandey2030/prism/blob/main/modules/README.md)
 
 [The visualization module for Prism](https://github.com/parth-pandey2030/prism/blob/main/modules/golden/README.md)
