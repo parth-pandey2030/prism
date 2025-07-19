@@ -18,16 +18,28 @@ spinner() {
     return $?
 }
 
+# Function to color text
+color_text() {
+    COLOR=$1
+    TEXT=$2
+
+    RESET=${tput sgr0}
+    case $COLOR in 
+        RED) return "${tput setaf 1} ${TEXT} ${RESET}"
+        GREEN) return "${tput setaf 2} ${TEXT} ${RESET}"
+
+}
+
 # Function to figure out which operating system is on the computer.
 operating_system() {
     case "$(uname -s)" in
-    solaris*) return "SOLARIS" ;;
-    darwin*)  return "OSX" ;; 
-    linux*)   return "LINUX" ;;
-    bsd*)     return "BSD" ;;
-    msys*)    return "WINDOWS" ;;
-    cygwin*)  return "ALSO WINDOWS" ;;
-    *)        return "unknown: $OSTYPE" ;;
+        solaris*) return "SOLARIS" ;;
+        darwin*)  return "OSX" ;; 
+        linux*)   return "LINUX" ;;
+        bsd*)     return "BSD" ;;
+        msys*)    return "WINDOWS" ;;
+        cygwin*)  return "ALSO WINDOWS" ;;
+        *)        return "unknown: $OSTYPE" ;;
     esac
 }
 
@@ -56,7 +68,7 @@ has_pip() {
 echo "Downloading sub-modules.... "
 has_python
 if [ $? -eq 0 ]; then
-    echo "Python is already installed"
+    echo -e "\e[32mPython is already installed\e[0m"
 else
     echo "Installing python..."
     case $(operating_system) in
@@ -86,13 +98,16 @@ fi
 
 has_pip
 if [ $? -eq 0 ]; then
-    echo "Pip is already installed"
+    echo "PIP is already installed"
 else
-    echo "Installing pip"
+    echo "Installing.... "
     curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
     python3 get-pip.py
     rm get-pip.py
 fi 
+
+pip install sympy
+pip install Cython
 
 echo "Activating prism.... " 
 chmod +x prism/shell/prism
@@ -102,3 +117,5 @@ echo "Converting prism to shell command.... "
 echo "You will need to enter your password:"
 sudo mv prism/shell/prism /usr/local/bin
 echo "Complete"
+
+echo "You can use Prism now!"
