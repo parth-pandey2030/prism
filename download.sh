@@ -106,8 +106,12 @@ else
     rm get-pip.py
 fi 
 
+# Install Python libraries
 pip install sympy
 pip install Cython
+pip install yaml
+pip install toml
+pip install 
 
 echo "Activating prism.... " 
 chmod +x prism/shell/prism
