@@ -8,7 +8,17 @@ import pyximport
 pyximport.install()
 
 from calculus.integrals import definite_integral as di
+from numbers import Bernoulli
+from math import factorial
 from sympy import symbols
+
+__all__ = [
+    "sum_values",
+    "arithemetic_sum_sequence",
+    "geometric_sum",
+    "limiting_sum",
+    "ramanujan_summation"
+]
 
 def sum_values(lower_bound: int, upper_bound: int, func):
     """
@@ -56,7 +66,7 @@ def geometric_sum(upper_bound: int, a: float, r: float):
     """
     return a / (1 - r) if upper_bound == float('inf') else a(r ** upper_bound - 1)
     
-def limiting_sum(lower_bound: int, upper_bound, func, precision = 0.000000001):
+def limiting_sum(lower_bound: int, upper_bound, func, precision = 1e-17):
     """
     This function calculates a sum by taking the limit of its partial sums.
 
@@ -71,7 +81,7 @@ def limiting_sum(lower_bound: int, upper_bound, func, precision = 0.000000001):
     partial_sum = lambda upper: sum_values(lower_bound, upper, func)
     return lib(partial_sum, upper_bound, -precision)
 
-def ramanujan_summation(lower_bound: int, upper_bound, func, precision_for_limit_sum = 0.0000001):
+def ramanujan_summation(lower_bound: int, upper_bound, func, precision = 1e-17):
     """
     This function calculates a sum using the Ramanujan summation technique, allowing it to sum many divergent series.
     For example, the sum (using Ramanujan summation) 1+2+3+4+5+6+7+8+9+...=-1/12, and 1+2+4+8+16+32+64+128+256+...=-1.
@@ -80,9 +90,26 @@ def ramanujan_summation(lower_bound: int, upper_bound, func, precision_for_limit
         lower_bound (int): the lower bound
         upper_bound (int or inf): the upper bound (may be infinity)
         func (func): the function that the sum sums over (e.g., in the sum Σx^2, func(x)=x^2)
-        precision_for_limit_sum (int or float): the precision for the limiting sums involved
+        precision (int or float): the precision for the limiting sums involved
     Returns:
         int or float: the sum
     """
+    def repeated_func(x, number_of_times_to_be_repeated):
+        result = x
+        for _ in range(number_of_times_to_be_repeated):
+            result = func(result)
+            
+        return result
     
-    C = di(func, symbols('t'), 0, lower_bound) - 0.5 * func(0)
+    bterm = lambda x: Sum(1, float('inf'), lambda k: Bernoulli(2 * k) * repeated_func(x, 2 * k - 1) / factorial(2 * k), precision)
+    C = lambda x: di(func, symbols('t'), x, lower_bound) - 0.5 * func(x) - bterm(x)
+
+    return C(lower_bound) + di(func, symbols('t'), lower_bound, upper_bound) - 0.5 * func(upper_bound) + bterm(upper_bound)
+
+def Sum(lower_bound: int, upper_bound, func, precision):
+    """
+    This function calculates a sum by either taking the limit of its partial sums or uses Ramanujan summation.
+    Please note that this function is not meant to be used externally (as a module), and is only meant to be used internally (that is also why there is limited documentation).
+    """
+    eval_sum = limiting_sum(lower_bound, upper_bound, func, precision) if 1 / limiting_sum(lower_bound, upper_bound, func, precision) == 0 else ramanujan_summation(lower_bound, upper_bound, func, precision)
+    return eval_sum
