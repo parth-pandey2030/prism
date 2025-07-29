@@ -23,11 +23,11 @@ color_text() {
     COLOR=$1
     TEXT=$2
 
-    RESET=${tput sgr0}
     case $COLOR in 
-        RED) return "${tput setaf 1} ${TEXT} ${RESET}"
-        GREEN) return "${tput setaf 2} ${TEXT} ${RESET}"
-
+        RED)   printf "%s\n" "$(tput setaf 1)${TEXT}$(tput sgr0)" ;;
+        GREEN) printf "%s\n" "$(tput setaf 2)${TEXT}$(tput sgr0)" ;;
+        *)     printf "%s\n" "$TEXT" ;;  # fallback
+    esac
 }
 
 # Function to figure out which operating system is on the computer.
@@ -106,20 +106,18 @@ else
     rm get-pip.py
 fi 
 
-# Install Python libraries
 pip install sympy
 pip install Cython
-pip install yaml
-pip install toml
-pip install 
+
+color_text GREEN "Complete"
 
 echo "Activating prism.... " 
 chmod +x prism/shell/prism
-echo "Complete"
+color_text GREEN "Complete"
 
 echo "Converting prism to shell command.... "
-echo "You will need to enter your password:"
+color_text RED "You will need to enter your password:"
 sudo mv prism/shell/prism /usr/local/bin
-echo "Complete"
+color_text GREEN "Complete"
 
-echo "You can use Prism now!"
+color_text GREEN "Prism has been succesfully installed. Enjoy!"
