@@ -10,7 +10,7 @@ pyximport.install()
 from calculus.integrals import definite_integral as di
 from numbers import Bernoulli
 from math import factorial
-from sympy import symbols
+from sympy import symbols, oo
 
 __all__ = [
     "sum_values",
@@ -64,7 +64,7 @@ def geometric_sum(upper_bound: int, a: float, r: float):
     Returns:
         float: the sum    
     """
-    return a / (1 - r) if upper_bound == float('inf') else a(r ** upper_bound - 1)
+    return a / (1 - r) if upper_bound == float('inf') or upper_bound == oo else a(r ** upper_bound - 1)
     
 def limiting_sum(lower_bound: int, upper_bound, func, precision = 1e-17):
     """
@@ -101,15 +101,11 @@ def ramanujan_summation(lower_bound: int, upper_bound, func, precision = 1e-17):
             
         return result
     
-    bterm = lambda x: Sum(1, float('inf'), lambda k: Bernoulli(2 * k) * repeated_func(x, 2 * k - 1) / factorial(2 * k), precision)
+    bterm = lambda x: _Sum(1, float('inf'), lambda k: Bernoulli(2 * k) * repeated_func(x, 2 * k - 1) / factorial(2 * k), precision)
     C = lambda x: di(func, symbols('t'), x, lower_bound) - 0.5 * func(x) - bterm(x)
 
     return C(lower_bound) + di(func, symbols('t'), lower_bound, upper_bound) - 0.5 * func(upper_bound) + bterm(upper_bound)
 
-def Sum(lower_bound: int, upper_bound, func, precision):
-    """
-    This function calculates a sum by either taking the limit of its partial sums or uses Ramanujan summation.
-    Please note that this function is not meant to be used externally (as a module), and is only meant to be used internally (that is also why there is limited documentation).
-    """
+def _Sum(lower_bound: int, upper_bound, func, precision):
     eval_sum = limiting_sum(lower_bound, upper_bound, func, precision) if 1 / limiting_sum(lower_bound, upper_bound, func, precision) == 0 else ramanujan_summation(lower_bound, upper_bound, func, precision)
     return eval_sum
