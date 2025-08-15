@@ -16,6 +16,6 @@ def Bernoulli(n):
     t = symbols('t')
     n /= 2
     alg_factor = 4 * n * (-1) ** (n + 1) # This is the term 4n(-1)^(n+1), and is algebraic.
-    calc_factor = di(t ** (2n - 1) / exp(2 * pi * t) -1, t, 0, inf)
+    calc_factor = di(t ** (2 * n - 1) / exp(2 * pi * t) -1, t, 0, inf)
     return alg_factor * calc_factor
 

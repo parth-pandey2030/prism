@@ -15,4 +15,4 @@ def finite_multiplication(begin, end, func):
     return result
 
 def infinite_multiplication(begin, func):
-    pass
+    pass # Define Infinite Multiplication 
